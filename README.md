@@ -15,3 +15,7 @@ inplace_swap:
 
 2-15:
   表达式为!(x^y) & 1;
+
+symbol_expand:
+  零扩展和符号扩展
+
