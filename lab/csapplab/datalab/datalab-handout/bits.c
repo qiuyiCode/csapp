@@ -287,28 +287,24 @@ int howManyBits(int x) {
  *   Rating: 4
  */
 unsigned floatScale2(unsigned uf) {
-  /*
-    1.非规格化数:尾数 * 2
-    2.规格化数:阶码 * 2
-  */
-  unsigned flag = uf & (1 << 31); // 符号位
-  unsigned exp = (uf >> 23) & 0xff; // 阶码
-  unsigned M = uf & 0x007fffff; // 尾数
-  if(exp == 0){ // 非规格浮点数,尾数 * 2
-    return (uf << 1) | flag;
-  }
+  int flag = uf & 0x80000000;
+  int exp = uf >> 23;
+  int tail = uf & 0x007fffff;
 
-  // f未*2之前,阶码全1,NaN
-  if(exp == 255){
+  int exp_judge = exp & 0xFF;
+  if(exp_judge == 255 && tail != 0){
     return uf;
   }
 
-  exp = exp + 1;
-  // f*2之后,阶码全1,最大值
-  if(exp == 255){
-    return 0x7f800000 | flag;
+  // 非规格化值
+  if(exp_judge == 0){
+    tail = tail << 1;
+    return flag + tail + exp;
+  }else{
+    exp = exp << 1;
+    tail = (1 >> 23) + tail;
+    return exp + tail + flag;
   }
-  return flag | (exp << 23) | M;
 }
 /* 
  * floatFloat2Int - Return bit-level equivalent of expression (int) f
