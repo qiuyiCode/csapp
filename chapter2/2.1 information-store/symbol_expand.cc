@@ -5,7 +5,7 @@ typedef unsigned char* byte_pointer;
 void show_bytes(byte_pointer start, size_t len) {
   size_t i = 0;
   for (i = 0; i < len; i++)
-  printf ("%.2x", start[i]);
+    printf ("%.2x", start[i]);
   printf("\n");
 }
 // 数据是固定的,怎么显示取决于你给计算机的指令是什么  
